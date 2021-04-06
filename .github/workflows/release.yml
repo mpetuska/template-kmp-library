@@ -38,7 +38,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - run: ./gradlew check build --info
+      - run: ./gradlew build check --info
         name: Gradle Check
 
   release-GitHub:
