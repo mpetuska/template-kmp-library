@@ -116,10 +116,6 @@ kotlin {
     }
   }
 
-  controlPublications(linuxHostTargets.map { it.name }) { currentOS.isLinux }
-  controlPublications(osxHostTargets.map { it.name }) { currentOS.isMacOsX }
-  controlPublications(windowsHostTargets.map { it.name }) { currentOS.isWindows }
-  controlPublications(mainHostTargets.map { it.name } + "kotlinMultiplatform") { isMainOS }
   publishing {
     publications {
       withType<MavenPublication> {
@@ -153,4 +149,8 @@ kotlin {
       }
     }
   }
+  controlPublications(linuxHostTargets.map { it.name }) { currentOS.isLinux }
+  controlPublications(osxHostTargets.map { it.name }) { currentOS.isMacOsX }
+  controlPublications(windowsHostTargets.map { it.name }) { currentOS.isWindows }
+  controlPublications(mainHostTargets.map { it.name } + "kotlinMultiplatform") { isMainOS }
 }
