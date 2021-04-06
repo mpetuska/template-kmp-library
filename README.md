@@ -16,3 +16,4 @@ except android (any help in getting that setup welcome) & deprecated wasm32.
 * Main host for publications can be changed via `gradle.properties#project.mainOS` property
 * GH dependabot setup
 * GH release action for platform dependant publications
+* GH check action for platform dependant tests on PRs
