@@ -1,7 +1,8 @@
 # template-kmp-library
 Kotlin multiplatform library template.
 
-Has a baseline setup for a multiplatform library supporting all kotlin [targets](https://kotlinlang.org/docs/mpp-supported-platforms.html) except deprecated wasm32.
+Has a baseline setup for a multiplatform library supporting all kotlin [targets](https://kotlinlang.org/docs/mpp-supported-platforms.html) 
+except android (any help in getting that setup welcome) & deprecated wasm32.
 
 ## Features
 * Native target grouping and shared sourceSets
