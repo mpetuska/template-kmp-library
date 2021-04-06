@@ -1,7 +1,7 @@
-import org.gradle.internal.os.OperatingSystem
-import util.nativeTargetGroup
-import util.by
 import util.Git
+import util.OS
+import util.by
+import util.nativeTargetGroup
 
 plugins {
   id("local.common-conventions")
@@ -12,15 +12,20 @@ plugins {
   `maven-publish`
 }
 
-internal val currentOS = OperatingSystem.current()
-internal val mainOS = OperatingSystem.forName(project.properties["project.mainOS"] as String).familyName
-internal val isMainOS = currentOS.familyName == mainOS
+internal val currentOS = OS.current()
+internal val mainOS = OS(project.properties["project.mainOS"] as String)
+internal val isMainOS = currentOS == mainOS
 
-logger.info("""
-  [OS Info] CurrentOS: ${currentOS.familyName} ($currentOS)
+logger.info(
+  """
+  [OS Info] CurrentOS: $currentOS
   [OS Info] MainOS: $mainOS
   [OS Info] IsMainOS: $isMainOS
-""".trimIndent())
+  [OS Info] IsLinux: ${currentOS.isLinux}
+  [OS Info] IsMacOSX: ${currentOS.isOSX}
+  [OS Info] IsWindows: ${currentOS.isWindows}
+""".trimIndent()
+)
 
 kotlin {
   explicitApi()
@@ -130,7 +135,7 @@ kotlin {
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
           .configureEach {
-            onlyIf { currentOS.isMacOsX }
+            this.onlyIf { currentOS.isOSX }
           }
       }
       matching { it.name in windowsPublications }.all {
