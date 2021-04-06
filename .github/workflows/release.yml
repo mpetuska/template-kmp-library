@@ -9,9 +9,6 @@ on:
   release:
     types: [ created ]
 
-env:
-  JVM_ARGS: -XX:MaxMetaspaceSize=2g
-
 jobs:
   check:
     runs-on: ${{ matrix.os }}
@@ -108,6 +105,8 @@ jobs:
           java-version: 11
       - uses: nick-invision/retry@v2
         name: Build Dokka
+        env:
+          JVM_ARGS: -XX:MaxMetaspaceSize=2g
         with:
           max_attempts: 3
           command: ./gradlew dokkaHtmlMultiModule --info

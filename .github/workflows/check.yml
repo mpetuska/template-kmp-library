@@ -6,9 +6,6 @@ on:
       - '**'
   workflow_dispatch:
 
-env:
-  JVM_ARGS: -XX:MaxMetaspaceSize=2g
-
 jobs:
   check:
     runs-on: ${{ matrix.os }}
