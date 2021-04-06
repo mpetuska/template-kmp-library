@@ -14,6 +14,5 @@ rootProject.name = "template-kmp-library"
 include(":sandbox", ":test")
 include(
   ":lib:template-kmp-library-core",
-  ":lib:template-kmp-library-dsl",
-  ":lib"
+  ":lib:template-kmp-library-dsl"
 )

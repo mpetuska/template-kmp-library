@@ -3,3 +3,4 @@ build/
 .idea/
 .vscode/
 local.properties
+*.hprof

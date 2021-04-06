@@ -1,7 +1,10 @@
 plugins {
+  id("local.common-conventions")
   kotlin("jvm")
   application
 }
+
+description = "Local consumer sandbox"
 
 application {
   mainClass.set("com.github.mpetuska.template.kmp.library.sandbox.MainKt")
@@ -10,7 +13,4 @@ application {
 dependencies {
   implementation(rootProject)
   testImplementation(project(":test"))
-  testImplementation(kotlin("test"))
-  testImplementation(kotlin("test-annotations-common"))
-  testImplementation(kotlin("test-junit"))
 }

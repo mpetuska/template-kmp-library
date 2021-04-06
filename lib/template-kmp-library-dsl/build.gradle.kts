@@ -1,3 +1,7 @@
+plugins {
+  id("local.library-conventions")
+}
+
 kotlin {
   sourceSets {
     commonMain {

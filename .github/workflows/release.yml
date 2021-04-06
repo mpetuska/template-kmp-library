@@ -1,0 +1,103 @@
+name: Release
+
+on:
+  release:
+    types: [ created ]
+
+env:
+  API_URL: https://kamp.azurewebsites.net
+  ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
+  ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
+  IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
+  LOG_LEVEL: ${{ github.event.inputs.logLevel }}
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 5
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - run: ./gradlew check
+
+  release-GitHub:
+    runs-on: ${{ matrix.os }}
+    needs: [ check ]
+    strategy:
+      max-parallel: 5
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - run: ./gradlew publish -Pversion=${VERSION//v}
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+          GH_USERNAME: ${{ github.actor }}
+          GH_PASSWORD: ${{ github.token }}
+
+  release-Dokka:
+    runs-on: ubuntu-latest
+    needs: [release-GitHub]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - uses: nick-invision/retry@v2
+        with:
+          max_attempts: 3
+          command: ./gradlew dokkaHtmlMultiModule
+        env:
+          JVM_ARGS: -XX:MaxMetaspaceSize=2g
+      - uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: build/dokka/htmlMultiModule
