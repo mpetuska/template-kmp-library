@@ -65,6 +65,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - run: ./gradlew publish -Pversion=${VERSION//v}
+        shell: bash
         env:
           VERSION: ${{ github.event.release.tag_name }}
           GH_USERNAME: ${{ github.actor }}
