@@ -9,6 +9,9 @@ on:
   release:
     types: [ created ]
 
+env:
+  JVM_ARGS: -XX:MaxMetaspaceSize=2g
+
 jobs:
   check:
     runs-on: ${{ matrix.os }}
@@ -108,8 +111,6 @@ jobs:
         with:
           max_attempts: 3
           command: ./gradlew dokkaHtmlMultiModule --info
-        env:
-          JVM_ARGS: -XX:MaxMetaspaceSize=2g
       - uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           branch: gh-pages
