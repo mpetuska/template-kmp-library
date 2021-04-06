@@ -94,10 +94,7 @@ kotlin {
     mingwX64() to true,
   )
   val linuxHostTargets = linuxTargets + androidNdkTargets
-  val osxHostTargets = nativeTargetGroup(
-    "osx",
-    *(iosTargets + watchosTargets + tvosTargets + macosTargets).map { it to false }.toTypedArray()
-  )
+  val osxHostTargets = iosTargets + watchosTargets + tvosTargets + macosTargets
   val nativeTargets = linuxHostTargets + osxHostTargets + windowsHostTargets
 
   sourceSets {
