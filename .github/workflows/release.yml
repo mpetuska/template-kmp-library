@@ -38,7 +38,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - run: ./gradlew check
+      - run: ./gradlew check --info
 
   release-GitHub:
     runs-on: ${{ matrix.os }}
@@ -72,7 +72,7 @@ jobs:
       - run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
-          ./gradlew publish -Pversion=${VERSION//v}
+          ./gradlew publish -Pversion=${VERSION//v} --info
         shell: bash
         env:
           VERSION: ${{ github.event.release.tag_name }}
@@ -104,7 +104,7 @@ jobs:
       - uses: nick-invision/retry@v2
         with:
           max_attempts: 3
-          command: ./gradlew dokkaHtmlMultiModule
+          command: ./gradlew dokkaHtmlMultiModule --info
         env:
           JVM_ARGS: -XX:MaxMetaspaceSize=2g
       - uses: JamesIves/github-pages-deploy-action@4.1.1

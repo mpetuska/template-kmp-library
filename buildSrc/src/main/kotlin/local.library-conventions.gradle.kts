@@ -13,12 +13,12 @@ plugins {
 }
 
 internal val currentOS = OperatingSystem.current()
-internal val mainOS = OperatingSystem.forName(project.properties["project.mainOS"] as String)
-internal val isMainOS = currentOS.familyName == mainOS.familyName
+internal val mainOS = OperatingSystem.forName(project.properties["project.mainOS"] as String).familyName
+internal val isMainOS = currentOS.familyName == mainOS
 
-println("""
-  [OS Info] CurrentOS: ${currentOS.familyName} $currentOS
-  [OS Info] MainOS: ${mainOS.familyName} $mainOS
+logger.info("""
+  [OS Info] CurrentOS: ${currentOS.familyName} ($currentOS)
+  [OS Info] MainOS: $mainOS
   [OS Info] IsMainOS: $isMainOS
 """.trimIndent())
 
@@ -122,7 +122,6 @@ kotlin {
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
           .configureEach {
-            println("[linux] $name")
             onlyIf { currentOS.isLinux }
           }
       }
@@ -131,7 +130,6 @@ kotlin {
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
           .configureEach {
-            println("[osx] $name")
             onlyIf { currentOS.isMacOsX }
           }
       }
@@ -140,7 +138,6 @@ kotlin {
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
           .configureEach {
-            println("[windows] $name")
             onlyIf { currentOS.isWindows }
           }
       }
@@ -149,7 +146,6 @@ kotlin {
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
           .configureEach {
-            println("[main] $name")
             onlyIf { isMainOS }
           }
       }
