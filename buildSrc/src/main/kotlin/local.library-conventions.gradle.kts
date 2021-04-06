@@ -85,10 +85,13 @@ kotlin {
     "macos",
     macosX64() to true
   )
+  //Commonizer does not yet work on [mingwX64, mingwX86]
   val windowsHostTargets = nativeTargetGroup(
     "windows",
-    mingwX64() to true,
     mingwX86() to false
+  ) + nativeTargetGroup(
+    "windows",
+    mingwX64() to true,
   )
   val linuxHostTargets = linuxTargets + androidNdkTargets
   val osxHostTargets = nativeTargetGroup(

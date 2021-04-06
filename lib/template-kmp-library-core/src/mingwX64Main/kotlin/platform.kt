@@ -1,3 +1,3 @@
 package com.github.mpetuska.template.kmp.library.core
 
-internal actual val platform: String = "Windows"
+internal actual val platform: String = "Windows X64"
