@@ -1,7 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 import util.Git
 import util.by
-import util.controlPublications
 import util.nativeTargetGroup
 
 plugins {
@@ -145,6 +144,20 @@ kotlin {
         credentials {
           username = System.getenv("GH_USERNAME")
           password = System.getenv("GH_PASSWORD")
+        }
+      }
+    }
+  }
+  fun controlPublications(publications: Collection<String>, enabled: Spec<in Task>) {
+    publishing {
+      publications {
+        matching { it.name in publications }.all {
+          val targetPublication = this@all
+          tasks.withType<AbstractPublishToMaven>()
+            .matching { it.publication == targetPublication }
+            .configureEach {
+              onlyIf(enabled)
+            }
         }
       }
     }
