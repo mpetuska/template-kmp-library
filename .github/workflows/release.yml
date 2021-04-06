@@ -109,6 +109,7 @@ jobs:
           JVM_ARGS: -XX:MaxMetaspaceSize=2g
         with:
           max_attempts: 3
+          timeout_minutes: 30
           command: ./gradlew dokkaHtmlMultiModule --info
       - uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
