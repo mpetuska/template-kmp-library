@@ -4,13 +4,6 @@ on:
   release:
     types: [ created ]
 
-env:
-  API_URL: https://kamp.azurewebsites.net
-  ADMIN_USER: ${{ secrets.API_ADMIN_USER }}
-  ADMIN_PASSWORD: ${{ secrets.API_ADMIN_PASSWORD }}
-  IMAGE: docker.pkg.github.com/mpetuska/kamp/scanner:latest
-  LOG_LEVEL: ${{ github.event.inputs.logLevel }}
-
 jobs:
   check:
     runs-on: ${{ matrix.os }}
