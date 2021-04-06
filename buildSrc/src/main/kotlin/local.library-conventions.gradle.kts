@@ -20,6 +20,9 @@ logger.info("""
   [OS Info] CurrentOS: ${currentOS.familyName} ($currentOS)
   [OS Info] MainOS: $mainOS
   [OS Info] IsMainOS: $isMainOS
+  [OS Info] IsLinux: ${currentOS.isLinux}
+  [OS Info] IsMacOSX: ${currentOS.isMacOsX}
+  [OS Info] IsWindows: ${currentOS.isWindows}
 """.trimIndent())
 
 kotlin {
