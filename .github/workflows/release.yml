@@ -1,6 +1,11 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        description: Package version to publish under
   release:
     types: [ created ]
 
@@ -64,7 +69,10 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - run: ./gradlew publish -Pversion=${VERSION//v}
+      - run: |
+          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+          VERSION=${VERSION/v}
+          ./gradlew publish -Pversion=${VERSION//v}
         shell: bash
         env:
           VERSION: ${{ github.event.release.tag_name }}

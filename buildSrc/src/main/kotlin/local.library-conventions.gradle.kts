@@ -12,9 +12,15 @@ plugins {
   `maven-publish`
 }
 
-internal val currentOs = OperatingSystem.current()
+internal val currentOS = OperatingSystem.current()
 internal val mainOS = OperatingSystem.forName(project.properties["project.mainOS"] as String)
-internal val isMainOS = currentOs == mainOS
+internal val isMainOS = currentOS.familyName == mainOS.familyName
+
+println("""
+  [OS Info] CurrentOS: ${currentOS.familyName} $currentOS
+  [OS Info] MainOS: ${mainOS.familyName} $mainOS
+  [OS Info] IsMainOS: $isMainOS
+""".trimIndent())
 
 kotlin {
   explicitApi()
@@ -70,14 +76,14 @@ kotlin {
     tvosArm64() to true,
     tvosX64() to true
   )
+  val macosTargets = nativeTargetGroup(
+    "macos",
+    macosX64() to true
+  )
   val windowsHostTargets = nativeTargetGroup(
     "windows",
     mingwX64() to true,
     mingwX86() to false
-  )
-  val macosTargets = nativeTargetGroup(
-    "macos",
-    macosX64() to true
   )
   val linuxHostTargets = linuxTargets + androidNdkTargets
   val osxHostTargets = nativeTargetGroup(
@@ -85,7 +91,6 @@ kotlin {
     *(iosTargets + watchosTargets + tvosTargets + macosTargets).map { it to false }.toTypedArray()
   )
   val nativeTargets = linuxHostTargets + osxHostTargets + windowsHostTargets
-
 
   sourceSets {
     commonTest {
@@ -116,25 +121,37 @@ kotlin {
         val targetPublication = this@all
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
-          .configureEach { onlyIf { currentOs.isLinux } }
+          .configureEach {
+            println("[linux] $name")
+            onlyIf { currentOS.isLinux }
+          }
       }
       matching { it.name in osxPublications }.all {
         val targetPublication = this@all
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
-          .configureEach { onlyIf { currentOs.isMacOsX } }
+          .configureEach {
+            println("[osx] $name")
+            onlyIf { currentOS.isMacOsX }
+          }
       }
       matching { it.name in windowsPublications }.all {
         val targetPublication = this@all
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
-          .configureEach { onlyIf { currentOs.isWindows } }
+          .configureEach {
+            println("[windows] $name")
+            onlyIf { currentOS.isWindows }
+          }
       }
       matching { it.name in mainPublications }.all {
         val targetPublication = this@all
         tasks.withType<AbstractPublishToMaven>()
           .matching { it.publication == targetPublication }
-          .configureEach { onlyIf { isMainOS } }
+          .configureEach {
+            println("[main] $name")
+            onlyIf { isMainOS }
+          }
       }
       withType<MavenPublication> {
         pom {
