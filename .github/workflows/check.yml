@@ -2,9 +2,11 @@ name: Check
 
 on:
   push:
-    tags-ignore: [ * ]
+    tags-ignore:
+      - '**'
   pull_request:
-    tags-ignore: [ * ]
+    tags-ignore:
+      - '**'
   workflow_dispatch:
 
 jobs:
