@@ -43,3 +43,4 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - run: ./gradlew check --info
+        name: Gradle Check

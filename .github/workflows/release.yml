@@ -39,6 +39,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - run: ./gradlew check --info
+        name: Gradle Check
 
   release-GitHub:
     runs-on: ${{ matrix.os }}
@@ -74,6 +75,7 @@ jobs:
           VERSION=${VERSION/v}
           ./gradlew publish -Pversion=${VERSION//v} --info
         shell: bash
+        name: Gradle Publish
         env:
           VERSION: ${{ github.event.release.tag_name }}
           GH_USERNAME: ${{ github.actor }}
@@ -102,6 +104,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
       - uses: nick-invision/retry@v2
+        name: Build Dokka
         with:
           max_attempts: 3
           command: ./gradlew dokkaHtmlMultiModule --info
