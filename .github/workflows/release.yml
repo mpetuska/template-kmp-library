@@ -10,80 +10,80 @@ on:
     types: [ created ]
 
 jobs:
-#  check:
-#    runs-on: ${{ matrix.os }}
-#    strategy:
-#      max-parallel: 5
-#      matrix:
-#        os:
-#          - macos-latest
-#          - windows-latest
-#          - ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Restore Gradle cache
-#        id: cache
-#        uses: actions/cache@v2.1.4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#            ~/.gradle/yarn
-#            ~/.gradle/nodejs
-#            ~/.konan
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#      - uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: 11
-#      - run: ./gradlew check publishToMavenLocal --info
-#        name: Gradle Check
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 5
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.gradle/yarn
+            ~/.gradle/nodejs
+            ~/.konan
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - run: ./gradlew check publishToMavenLocal --info
+        name: Gradle Check
 
-#  release-GitHub:
-#    runs-on: ${{ matrix.os }}
-#    needs: [ check ]
-#    strategy:
-#      max-parallel: 5
-#      matrix:
-#        os:
-#          - macos-latest
-#          - windows-latest
-#          - ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Restore Gradle cache
-#        id: cache
-#        uses: actions/cache@v2.1.4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#            ~/.gradle/yarn
-#            ~/.gradle/nodejs
-#            ~/.konan
-#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-#          restore-keys: |
-#            ${{ runner.os }}-gradle-
-#      - uses: actions/setup-java@v2
-#        with:
-#          distribution: 'adopt'
-#          java-version: 11
-#      - run: |
-#          VERSION=${VERSION:=${{ github.event.inputs.version }}}
-#          VERSION=${VERSION/v}
-#          ./gradlew publish -Pversion=${VERSION//v} --info
-#        shell: bash
-#        name: Gradle Publish
-#        env:
-#          VERSION: ${{ github.event.release.tag_name }}
-#          GH_USERNAME: ${{ github.actor }}
-#          GH_PASSWORD: ${{ github.token }}
+  release-GitHub:
+    runs-on: ${{ matrix.os }}
+    needs: [ check ]
+    strategy:
+      max-parallel: 5
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Restore Gradle cache
+        id: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.gradle/yarn
+            ~/.gradle/nodejs
+            ~/.konan
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+      - run: |
+          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+          VERSION=${VERSION/v}
+          ./gradlew publish -Pversion=${VERSION//v} --info
+        shell: bash
+        name: Gradle Publish
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+          GH_USERNAME: ${{ github.actor }}
+          GH_PASSWORD: ${{ github.token }}
 
   release-Dokka:
     runs-on: ubuntu-latest
-#    needs: [release-GitHub]
+    needs: [release-GitHub]
     steps:
       - uses: actions/checkout@v2
       - name: Restore Gradle cache
