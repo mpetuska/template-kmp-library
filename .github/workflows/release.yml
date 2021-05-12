@@ -111,7 +111,7 @@ jobs:
           max_attempts: 3
           timeout_minutes: 30
           command: ./gradlew dokkaHtmlMultiModule --info
-      - uses: crazy-max/ghaction-github-pages@v2
+      - uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
           target_branch: gh-pages
           build_dir: build/dokka/htmlMultiModule
