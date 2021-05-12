@@ -103,7 +103,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - uses: nick-invision/retry@v2
+      - uses: nick-invision/retry@v2.4.0
         name: Build Dokka
         env:
           JVM_ARGS: -XX:MaxMetaspaceSize=2g
