@@ -17,7 +17,7 @@ jobs:
           - windows-latest
           - ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Restore Gradle cache
         id: cache
         uses: actions/cache@v2.1.5
