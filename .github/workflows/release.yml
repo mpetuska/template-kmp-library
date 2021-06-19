@@ -32,24 +32,24 @@ jobs:
           - windows-latest
           - ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Restore Gradle cache
-        id: cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/yarn
-            ~/.gradle/nodejs
-            ~/.konan
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: 11
+#      - uses: actions/checkout@v2
+#      - name: Restore Gradle cache
+#        id: cache
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#            ~/.gradle/yarn
+#            ~/.gradle/nodejs
+#            ~/.konan
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: 11
       - run: echo ./gradlew check publishToMavenLocal --info
         name: Gradle Check
 
@@ -80,27 +80,27 @@ jobs:
           - windows-latest
           - ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        if: ${{ matrix.repository.enabled }}
-      - name: Restore Gradle cache
-        if: ${{ matrix.repository.enabled }}
-        id: cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/yarn
-            ~/.gradle/nodejs
-            ~/.konan
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - uses: actions/setup-java@v2
-        if: ${{ matrix.repository.enabled }}
-        with:
-          distribution: 'adopt'
-          java-version: 11
+#      - uses: actions/checkout@v2
+#        if: ${{ matrix.repository.enabled }}
+#      - name: Restore Gradle cache
+#        if: ${{ matrix.repository.enabled }}
+#        id: cache
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#            ~/.gradle/yarn
+#            ~/.gradle/nodejs
+#            ~/.konan
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - uses: actions/setup-java@v2
+#        if: ${{ matrix.repository.enabled }}
+#        with:
+#          distribution: 'adopt'
+#          java-version: 11
       - name: Gradle Publish
         if: ${{ matrix.repository.enabled }}
         run: |
@@ -110,43 +110,43 @@ jobs:
           echo ./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v}
         shell: bash
 
-  release-Dokka:
-    runs-on: ubuntu-latest
-    needs: [check]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Restore Gradle cache
-        id: cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/yarn
-            ~/.gradle/nodejs
-            ~/.konan
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: 11
-      - name: Build Dokka Pages
-        shell: bash
-        run: |
-          VERSION=${VERSION:=${{ github.event.inputs.version }}}
-          VERSION=${VERSION/v}
-          REPO_NAME=${{ github.repository }}
-          REPO_NAME=${REPO_NAME#${{ github.repository_owner }}/}
-          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
-          cp -avr build/dokka/htmlMultiModule/ public;
-          find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
-          echo "/${REPO_NAME} /${REPO_NAME}/${REPO_NAME}/index.html 301" > public/_redirects;
-          echo "/${REPO_NAME}/index.html /${REPO_NAME}/${REPO_NAME}/index.html 301" >> public/_redirects;
-      - uses: crazy-max/ghaction-github-pages@v2.5.0
-        with:
-          target_branch: gh-pages
-          build_dir: public
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+#  release-Dokka:
+#    runs-on: ubuntu-latest
+#    needs: [check]
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Restore Gradle cache
+#        id: cache
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#            ~/.gradle/yarn
+#            ~/.gradle/nodejs
+#            ~/.konan
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: 11
+#      - name: Build Dokka Pages
+#        shell: bash
+#        run: |
+#          VERSION=${VERSION:=${{ github.event.inputs.version }}}
+#          VERSION=${VERSION/v}
+#          REPO_NAME=${{ github.repository }}
+#          REPO_NAME=${REPO_NAME#${{ github.repository_owner }}/}
+#          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
+#          cp -avr build/dokka/htmlMultiModule/ public;
+#          find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+#          echo "/${REPO_NAME} /${REPO_NAME}/${REPO_NAME}/index.html 301" > public/_redirects;
+#          echo "/${REPO_NAME}/index.html /${REPO_NAME}/${REPO_NAME}/index.html 301" >> public/_redirects;
+#      - uses: crazy-max/ghaction-github-pages@v2.5.0
+#        with:
+#          target_branch: gh-pages
+#          build_dir: public
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
