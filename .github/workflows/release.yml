@@ -106,7 +106,8 @@ jobs:
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
-          ./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v}
+          echo ${{ matrix.repository.enabled }}
+          #./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v}
         shell: bash
 
   release-Dokka:
