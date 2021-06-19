@@ -11,11 +11,11 @@ on:
         required: false
         default: "y"
       skipGitHub:
-        description: Should we skip publishing to GitHub
+        description: Should we skip publishing artefacts to GitHub Packages
         required: false
         default: "y"
       skipMavenCentral:
-        description: Should we skip publishing to Maven Central
+        description: Should we skip publishing artefacts to Maven Central
         required: false
         default: "y"
   release:
