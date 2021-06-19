@@ -71,7 +71,7 @@ jobs:
             tasks: publishAllPublicationsToGitHubRepository
             enabled: ${{ github.event.inputs.skipGitHub != 'true' }} && true
           - name: Maven Central
-            # Requires to manually release a new version on https://s01.oss.sonatype.org
+            # Requires to manually release a new version on https://s01.oss.sonatype.org/#stagingRepositories
             # If you're brave, you could change it to `publishToSonatype closeAndReleaseSonatypeStagingRepository` to fully automate the release
             tasks: publishToSonatype closeSonatypeStagingRepository
             enabled: ${{ github.event.inputs.skipMavenCentral != 'true' }} && true
