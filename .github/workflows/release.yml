@@ -53,7 +53,6 @@ jobs:
 
   release-Artefacts:
     runs-on: ${{ matrix.os }}
-    if: ${{ matrix.repository.enabled }}
     needs: [ check ]
     env:
       GH_USERNAME: ${{ github.actor }}
@@ -80,7 +79,9 @@ jobs:
           - ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        if: ${{ matrix.repository.enabled }}
       - name: Restore Gradle cache
+        if: ${{ matrix.repository.enabled }}
         id: cache
         uses: actions/cache@v2.1.6
         with:
@@ -94,10 +95,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - uses: actions/setup-java@v2
+        if: ${{ matrix.repository.enabled }}
         with:
           distribution: 'adopt'
           java-version: 11
       - name: Gradle Publish
+        if: ${{ matrix.repository.enabled }}
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
