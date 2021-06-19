@@ -4,3 +4,4 @@ build/
 .vscode/
 local.properties
 *.hprof
+lint.xml

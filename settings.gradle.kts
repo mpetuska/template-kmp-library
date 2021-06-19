@@ -1,17 +1,9 @@
-import de.fayard.refreshVersions.bootstrapRefreshVersions
-
-buildscript {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-  }
-  dependencies { classpath("de.fayard.refreshVersions:refreshVersions:0.9.7") }
+plugins {
+    id("de.fayard.refreshVersions") version "0.10.1"
 }
 
-bootstrapRefreshVersions()
-
 rootProject.name = "template-kmp-library"
-include(":sandbox", ":test")
+include(":test")
 include(
   ":lib:template-kmp-library-core",
   ":lib:template-kmp-library-dsl"

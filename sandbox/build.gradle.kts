@@ -1,8 +1,13 @@
 plugins {
-  id("local.common-conventions")
+  id("convention.common")
   kotlin("jvm")
   application
 }
+
+//repositories {
+//  mavenCentral()
+//  google()
+//}
 
 description = "Local consumer sandbox"
 
@@ -12,5 +17,5 @@ application {
 
 dependencies {
   implementation(rootProject)
-  testImplementation(project(":test"))
+  testImplementation("dev.petuska:template-kmp-library")
 }
