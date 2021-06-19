@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import util.nativeTargetGroup
+import util.KotlinTargetDetails
 
 plugins {
   kotlin("multiplatform")
@@ -80,28 +81,18 @@ kotlin {
     }
   }
 
-  val targetsWithCoroutines = listOf(
-    jvm(),
-    js(),
-    linuxX64(),
-    iosArm32(),
-    iosArm64(),
-    iosX64(),
-    watchosArm32(),
-    watchosArm64(),
-    watchosX86(),
-    tvosArm64(),
-    tvosX64(),
-    macosX64(),
-    mingwX64(),
-  )
-  targetsWithCoroutines.forEach {
-    it.compilations["main"].defaultSourceSet {
-      dependencies {
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
+  val targetsWithCoroutines = KotlinTargetDetails.values()
+    .filter(KotlinTargetDetails::hasCoroutines)
+    .map(KotlinTargetDetails::presetName)
+
+  targets.filter { it.preset?.name in targetsWithCoroutines }
+    .forEach {
+      it.compilations["main"].defaultSourceSet {
+        dependencies {
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
+        }
       }
     }
-  }
 }
 
 tasks {
