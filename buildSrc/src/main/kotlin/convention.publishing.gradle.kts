@@ -1,4 +1,9 @@
 import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
@@ -101,12 +106,6 @@ publishing {
 }
 
 kotlin {
-  val mainHostTargets = (
-      targets.filterIsInstance<KotlinJvmTarget>() +
-          targets.filterIsInstance<KotlinJsTargetDsl>() +
-          targets.filterIsInstance<KotlinAndroidTarget>()
-      ).toSet()
-
   val nativeTargets = targets.filterIsInstance<KotlinNativeTarget>()
   val androidNdkTargets = setOf(
     "androidNativeArm32",
@@ -141,12 +140,19 @@ kotlin {
     "mingwX64",
     "mingwX86",
   ).run { nativeTargets.filter { it.preset?.name in this }.toSet() }
+  val crossPlatformTargets = (
+      targets.filterIsInstance<KotlinJvmTarget>() +
+          targets.filterIsInstance<KotlinJsTargetDsl>() +
+          targets.filterIsInstance<KotlinAndroidTarget>()
+      ).toSet()
 
   val windowsHostTargets = mingwTargets
   val linuxHostTargets = linuxTargets + androidNdkTargets
   val osxHostTargets = iosTargets + watchosTargets + tvosTargets + macosTargets
+  val mainHostTargets = crossPlatformTargets + Named { "kotlinMultiplatform" }
 
-  fun controlPublications(publications: Collection<String>, enabled: Spec<in Task>) {
+  fun Collection<Named>.onlyPublishIf(enabled: Spec<in Task>) {
+    val publications: Collection<String> = map { it.name }
     publishing {
       publications {
         matching { it.name in publications }.all {
@@ -160,8 +166,9 @@ kotlin {
       }
     }
   }
-  controlPublications(linuxHostTargets.map { it.name }) { currentOS.isLinux }
-  controlPublications(osxHostTargets.map { it.name }) { currentOS.isMacOsX }
-  controlPublications(windowsHostTargets.map { it.name }) { currentOS.isWindows }
-  controlPublications(mainHostTargets.map { it.name } + "kotlinMultiplatform") { isMainOS }
+
+  linuxHostTargets.onlyPublishIf { currentOS.isLinux }
+  osxHostTargets.onlyPublishIf { currentOS.isMacOsX }
+  windowsHostTargets.onlyPublishIf { currentOS.isWindows }
+  mainHostTargets.onlyPublishIf { isMainOS }
 }
