@@ -19,11 +19,13 @@ on:
 
 env:
   VERSION: ${{ github.event.release.tag_name }}
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
 jobs:
   check:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - macos-latest
