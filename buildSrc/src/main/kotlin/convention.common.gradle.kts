@@ -6,6 +6,9 @@ plugins {
 repositories {
   mavenCentral()
   google()
+  if (project.properties["project.useSnapshotRepositories"] == "true") {
+    maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+  }
 }
 
 idea {
