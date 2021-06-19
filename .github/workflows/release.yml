@@ -6,10 +6,6 @@ on:
       version:
         required: true
         description: Package version to publish under
-      skipGradlePluginPortal:
-        description: Should we skip publishing to Gradle Plugin Portal
-        required: false
-        default: "true"
       skipGitHub:
         description: Should we skip publishing to GitHub
         required: false
