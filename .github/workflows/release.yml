@@ -37,25 +37,25 @@ jobs:
           - ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Restore Gradle cache
-        id: cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/yarn
-            ~/.gradle/nodejs
-            ~/.konan
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: 11
-      - run: ./gradlew check publishToMavenLocal --info
-        name: Gradle Check
+#      - name: Restore Gradle cache
+#        id: cache
+#        uses: actions/cache@v2.1.6
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#            ~/.gradle/yarn
+#            ~/.gradle/nodejs
+#            ~/.konan
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - uses: actions/setup-java@v2
+#        with:
+#          distribution: 'adopt'
+#          java-version: 11
+#      - run: ./gradlew check publishToMavenLocal --info
+#        name: Gradle Check
 
   release-Artefacts:
     runs-on: ${{ matrix.os }}
@@ -85,9 +85,9 @@ jobs:
           - ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        if: ${{ matrix.repository.enabled == true }}
+        if: ${{ matrix.repository.enabled }} == true
       - name: Restore Gradle cache
-        if: ${{ matrix.repository.enabled == true }}
+        if: ${{ matrix.repository.enabled }} == true
         id: cache
         uses: actions/cache@v2.1.6
         with:
@@ -101,12 +101,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - uses: actions/setup-java@v2
-        if: ${{ matrix.repository.enabled == true }}
+        if: ${{ matrix.repository.enabled }} == true
         with:
           distribution: 'adopt'
           java-version: 11
       - name: Gradle Publish
-        if: ${{ matrix.repository.enabled == true }}
+        if: ${{ matrix.repository.enabled }} == true
         shell: bash
         run: |
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
