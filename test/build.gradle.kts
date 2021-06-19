@@ -1,5 +1,5 @@
 plugins {
-  id("local.library-conventions")
+  id("convention.library")
 }
 
 description = "Local test utilities"
@@ -24,8 +24,4 @@ kotlin {
       }
     }
   }
-}
-tasks {
-  withType<AbstractPublishToMaven>().configureEach { onlyIf { false } }
-  withType<org.jetbrains.dokka.gradle.AbstractDokkaTask>().configureEach { onlyIf { false } }
 }

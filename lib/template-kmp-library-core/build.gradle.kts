@@ -1,3 +1,3 @@
 plugins {
-  id("local.library-conventions")
+  id("convention.publishing")
 }

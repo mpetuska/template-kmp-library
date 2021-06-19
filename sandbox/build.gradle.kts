@@ -1,16 +1,21 @@
 plugins {
-  id("local.common-conventions")
-  kotlin("jvm")
+  kotlin("jvm") version "1.5.10"
   application
+}
+
+repositories {
+  mavenCentral()
+  google()
+  maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
 }
 
 description = "Local consumer sandbox"
 
 application {
-  mainClass.set("com.github.mpetuska.template.kmp.library.sandbox.MainKt")
+  mainClass.set("local.sandbox.MainKt")
 }
 
 dependencies {
-  implementation(rootProject)
-  testImplementation(project(":test"))
+  implementation("dev.petuska:template-kmp-library")
+  testImplementation("dev.petuska:test")
 }

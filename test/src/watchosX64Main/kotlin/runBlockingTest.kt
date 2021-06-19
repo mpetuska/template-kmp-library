@@ -1,4 +1,4 @@
-package com.github.mpetuska.template.kmp.library.test
+package local.test
 
 actual interface CoroutineScope
 

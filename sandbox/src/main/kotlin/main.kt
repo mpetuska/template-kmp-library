@@ -1,8 +1,8 @@
-package com.github.mpetuska.template.kmp.library.sandbox
+package local.sandbox
 
-import com.github.mpetuska.template.kmp.library.core.CoreLib
-import com.github.mpetuska.template.kmp.library.dsl.withPlatform
-import com.github.mpetuska.template.kmp.library.dsl.withPlatformSuspend
+import dev.petuska.template.kmp.library.core.CoreLib
+import dev.petuska.template.kmp.library.dsl.withPlatform
+import dev.petuska.template.kmp.library.dsl.withPlatformSuspend
 import kotlinx.coroutines.runBlocking
 
 fun main() {

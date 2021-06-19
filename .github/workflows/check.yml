@@ -6,11 +6,14 @@ on:
       - '**'
   workflow_dispatch:
 
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
 jobs:
   check:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 5
+      fail-fast: false
       matrix:
         os:
           - macos-latest
@@ -35,5 +38,5 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - run: ./gradlew check --info
+      - run: ./gradlew assemble check --info
         name: Gradle Check

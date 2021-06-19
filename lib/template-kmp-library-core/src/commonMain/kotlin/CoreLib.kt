@@ -1,4 +1,4 @@
-package com.github.mpetuska.template.kmp.library.core
+package dev.petuska.template.kmp.library.core
 
 internal expect val platform: String
 

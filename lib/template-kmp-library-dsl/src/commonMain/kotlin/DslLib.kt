@@ -1,4 +1,4 @@
-package com.github.mpetuska.template.kmp.library.dsl
+package dev.petuska.template.kmp.library.dsl
 
 internal expect val platform: String
 
