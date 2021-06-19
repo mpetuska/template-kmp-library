@@ -8,7 +8,7 @@ gitHooks {
     mapOf(
       "post-checkout" to "ktlintApplyToIdea",
       "pre-commit" to "ktlintFormat",
-      "pre-push" to "check"
+      "pre-push" to "ktlintCheck"
     )
   )
 }
