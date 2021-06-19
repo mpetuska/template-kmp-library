@@ -1,3 +1,3 @@
-package com.github.mpetuska.template.kmp.library.core
+package dev.petuska.template.kmp.library.core
 
 internal actual val platform: String = "Windows X86"

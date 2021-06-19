@@ -1,1 +1,1 @@
-package com.github.mpetuska.template.kmp.library
+package dev.petuska.template.kmp.library

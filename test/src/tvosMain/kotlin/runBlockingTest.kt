@@ -1,4 +1,4 @@
-package com.github.mpetuska.template.kmp.library.test
+package local.test
 import kotlinx.coroutines.runBlocking
 
 actual typealias CoroutineScope = kotlinx.coroutines.CoroutineScope

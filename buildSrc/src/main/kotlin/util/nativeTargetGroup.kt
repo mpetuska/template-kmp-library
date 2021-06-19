@@ -7,42 +7,33 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 fun KotlinMultiplatformExtension.nativeTargetGroup(
   name: String,
-  vararg targets: Pair<KotlinNativeTarget, Boolean /* has coroutines */>
-): Set<KotlinNativeTarget> {
-  val groupTargets = targets.toMap()
-
-  val allWithCoroutines = groupTargets.values.all { it }
+  vararg targets: KotlinNativeTarget
+): Array<out KotlinNativeTarget> {
   sourceSets {
-    val commonMain = getByName("commonMain")
-    val commonTest = getByName("commonTest")
-    val main = if (groupTargets.size > 1) {
-      create("${name}Main") {
+    val (main, test) = if (targets.size > 1) {
+      val commonMain = getByName("commonMain")
+      val commonTest = getByName("commonTest")
+      val main = create("${name}Main") {
         dependsOn(commonMain)
-        if (allWithCoroutines) {
-          dependencies {
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
-          }
-        }
       }
-    } else null
-    val test = if (groupTargets.size > 1) {
-      create("${name}Test") {
+      val test = create("${name}Test") {
         dependsOn(commonTest)
       }
-    } else null
-    groupTargets.entries.forEach { (target, hasCoroutines) ->
-      target.compilations["main"].defaultSourceSet {
-        main?.let { dependsOn(main) }
-        if (hasCoroutines) {
-          dependencies {
-            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
-          }
+      main to test
+    } else (null to null)
+
+    targets.forEach { target ->
+      main?.let {
+        target.compilations["main"].defaultSourceSet {
+          dependsOn(main)
         }
       }
-      target.compilations["test"].defaultSourceSet {
-        test?.let { dependsOn(test) }
+      test?.let {
+        target.compilations["test"].defaultSourceSet {
+          dependsOn(test)
+        }
       }
     }
   }
-  return groupTargets.keys
+  return targets
 }

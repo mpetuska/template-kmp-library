@@ -1,5 +1,3 @@
-package util
-
 import groovy.lang.Closure
 import org.gradle.api.provider.Property
 import java.nio.charset.Charset

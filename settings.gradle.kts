@@ -1,5 +1,6 @@
 plugins {
-    id("de.fayard.refreshVersions") version "0.10.1"
+  id("de.fayard.refreshVersions") version "0.10.1"
+  id("com.gradle.enterprise") version "3.6.1"
 }
 
 rootProject.name = "template-kmp-library"

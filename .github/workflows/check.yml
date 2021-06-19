@@ -10,7 +10,6 @@ jobs:
   check:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 5
       matrix:
         os:
           - macos-latest

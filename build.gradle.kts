@@ -1,24 +1,22 @@
 plugins {
-  id("convention.library")
-  id("convention.publishing")
+  id("convention.publishing-nexus")
   id("com.github.jakemarsden.git-hooks")
-  idea
 }
 
 gitHooks {
   setHooks(
-      mapOf(
-          "post-checkout" to "ktlintApplyToIdea",
-          "pre-commit" to "ktlintFormat",
-          "pre-push" to "check"
-      )
+    mapOf(
+      "post-checkout" to "ktlintApplyToIdea",
+      "pre-commit" to "ktlintFormat",
+      "pre-push" to "check"
+    )
   )
 }
 
-idea {
-  module {
-    isDownloadSources = true
-    isDownloadJavadoc = true
+gradleEnterprise {
+  buildScan {
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    termsOfServiceAgree = "yes"
   }
 }
 
