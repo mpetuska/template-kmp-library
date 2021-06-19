@@ -26,6 +26,25 @@ logger.info(
 """.trimIndent()
 )
 
+tasks {
+  register<Jar>("javadocJar") {
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.get().outputDirectory)
+  }
+  withType<Jar> {
+    manifest {
+      attributes += sortedMapOf(
+        "Built-By" to System.getProperty("user.name"),
+        "Build-Jdk" to System.getProperty("java.version"),
+        "Implementation-Version" to project.version,
+        "Created-By" to "${GradleVersion.current()}",
+        "Created-From" to Git.headCommitHash
+      )
+    }
+  }
+}
+
 signing {
   val signingKey: String? by project
   val signingPassword: String? by project
@@ -50,6 +69,7 @@ publishing {
     val ghOwnerName: String = project.properties["gh.owner.name"]!!.toString()
     val ghOwnerEmail: String = project.properties["gh.owner.email"]!!.toString()
     withType<MavenPublication> {
+      artifact(tasks["javadocJar"])
       pom {
         name by project.name
         url by "https://github.com/$ghOwnerId/${project.name}"
@@ -80,41 +100,12 @@ publishing {
   }
 }
 
-afterEvaluate {
-  tasks {
-    withType<Jar> {
-      manifest {
-        attributes += sortedMapOf(
-          "Built-By" to System.getProperty("user.name"),
-          "Build-Jdk" to System.getProperty("java.version"),
-          "Implementation-Version" to project.version,
-          "Created-By" to "${org.gradle.util.GradleVersion.current()}",
-          "Created-From" to Git.headCommitHash
-        )
-      }
-    }
-  }
-}
-
 kotlin {
-  val mainHostTargets = (targets.filterIsInstance<KotlinJvmTarget>().also {
-    it.firstOrNull()?.let {
-      tasks {
-        val javadocJar = create<Jar>("javadocJar") {
-          dependsOn(dokkaJavadoc)
-          archiveClassifier.set("javadoc")
-          from(dokkaJavadoc.get().outputDirectory)
-        }
-        publishing {
-          publications {
-            named(it.name, MavenPublication::class) {
-              artifact(javadocJar)
-            }
-          }
-        }
-      }
-    }
-  } + targets.filterIsInstance<KotlinJsTargetDsl>() + targets.filterIsInstance<KotlinAndroidTarget>()).toSet()
+  val mainHostTargets = (
+      targets.filterIsInstance<KotlinJvmTarget>() +
+          targets.filterIsInstance<KotlinJsTargetDsl>() +
+          targets.filterIsInstance<KotlinAndroidTarget>()
+      ).toSet()
 
   val nativeTargets = targets.filterIsInstance<KotlinNativeTarget>()
   val androidNdkTargets = setOf(
