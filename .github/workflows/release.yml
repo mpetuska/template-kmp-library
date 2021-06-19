@@ -50,7 +50,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 11
-      - run: ./gradlew check publishToMavenLocal --info
+      - run: echo ./gradlew check publishToMavenLocal --info
         name: Gradle Check
 
   release-Artefacts:
@@ -107,7 +107,7 @@ jobs:
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
           echo ${{ matrix.repository.enabled }}
-          #./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v}
+          echo ./gradlew ${{ matrix.repository.tasks }} -Pversion=${VERSION//v}
         shell: bash
 
   release-Dokka:
