@@ -69,12 +69,12 @@ jobs:
         repository:
           - name: Github Packages
             tasks: publishAllPublicationsToGitHubRepository
-            enabled: true
+            enabled: ${{ github.event.inputs.skipGitHub != 'true' }} && true
           - name: Maven Central
             # Requires to manually release a new version on https://s01.oss.sonatype.org
             # If you're brave, you could change it to `publishToSonatype closeAndReleaseSonatypeStagingRepository` to fully automate the release
             tasks: publishToSonatype closeSonatypeStagingRepository
-            enabled: true
+            enabled: ${{ github.event.inputs.skipMavenCentral != 'true' }} && true
         os:
           - macos-latest
           - windows-latest
@@ -137,9 +137,9 @@ jobs:
           VERSION=${VERSION:=${{ github.event.inputs.version }}}
           VERSION=${VERSION/v}
           REPO_NAME=${{ github.repository }}
-          REPO_NAME=${REPO_NAME#${{ github.repository_owner }}}}
-          ./gradlew dokkaHtml -Pversion=${VERSION//v};
-          cp -avr build/dokka/html/ public;
+          REPO_NAME=${REPO_NAME#${{ github.repository_owner }}/}
+          ./gradlew dokkaHtmlMultiModule -Pversion=${VERSION//v};
+          cp -avr build/dokka/htmlMultiModule/ public;
           find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
           echo "/${REPO_NAME} /${REPO_NAME}/${REPO_NAME}/index.html 301" > public/_redirects;
           echo "/${REPO_NAME}/index.html /${REPO_NAME}/${REPO_NAME}/index.html 301" >> public/_redirects;
