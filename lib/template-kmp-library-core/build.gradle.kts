@@ -1,3 +1,4 @@
 plugins {
-  id("convention.publishing")
+  id("plugin.library-mpp")
+  id("plugin.publishing-mpp")
 }

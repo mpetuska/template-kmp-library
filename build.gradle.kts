@@ -1,12 +1,13 @@
 plugins {
-  id("convention.publishing-nexus")
+  id("plugin.library-mpp")
+  id("plugin.publishing-mpp")
+  id("plugin.publishing-nexus")
   id("com.github.jakemarsden.git-hooks")
 }
 
 gitHooks {
   setHooks(
     mapOf(
-      "post-checkout" to "ktlintApplyToIdea",
       "pre-commit" to "ktlintFormat",
       "pre-push" to "ktlintCheck"
     )

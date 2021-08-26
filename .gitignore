@@ -1,7 +1,11 @@
-build/
 .gradle/
 .idea/
 .vscode/
+build/
+out/
+dist/
 local.properties
-*.hprof
 lint.xml
+*.hprof
+*.out
+*.log

@@ -1,11 +1,18 @@
+import gradle.kotlin.dsl.accessors._d0d153d88d73ba7c0f037c4f5410c0c7.commonTest
+import gradle.kotlin.dsl.accessors._d0d153d88d73ba7c0f037c4f5410c0c7.sourceSets
+import org.gradle.kotlin.dsl.invoke
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
+import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import util.nativeTargetGroup
+import org.jetbrains.kotlin.konan.target.HostManager
 import util.KotlinTargetDetails
+import util.buildHost
+import util.nativeTargetGroup
 
 plugins {
   kotlin("multiplatform")
   kotlin("plugin.serialization")
-  id("convention.common")
+  id("plugin.common")
 }
 
 kotlin {
@@ -96,9 +103,21 @@ kotlin {
 }
 
 tasks {
-  withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = project.properties["org.gradle.project.targetCompatibility"]!!.toString()
+  project.properties["org.gradle.project.targetCompatibility"]?.toString()?.let {
+    withType<KotlinCompile> {
+      kotlinOptions {
+        jvmTarget = it
+      }
+    }
+  }
+  withType<CInteropProcess> {
+    onlyIf {
+      konanTarget.buildHost == HostManager.host.family
+    }
+  }
+  withType<AbstractKotlinNativeCompile<*, *>> {
+    onlyIf {
+      compilation.konanTarget.buildHost == HostManager.host.family
     }
   }
 }
