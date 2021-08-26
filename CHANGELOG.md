@@ -8,3 +8,4 @@
 * Added baseline flow for setting up required native libraries on different CI hosts via [scripts/] directory
 * Native library caching for check and release actions
 * Upgraded versions
+* Fixed detekt issues
