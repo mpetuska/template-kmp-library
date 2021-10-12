@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._22fb0f66704d76c1f3b70c84bc95bb50.publishing
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.target.HostManager
 import util.Git
@@ -80,14 +78,14 @@ publishing {
         name by project.name
         url by "https://github.com/$ghOwnerId/${rootProject.name}"
         description by project.description
-
+        
         licenses {
           license {
             name by "The Apache License, Version 2.0"
             url by "https://www.apache.org/licenses/LICENSE-2.0.txt"
           }
         }
-
+        
         developers {
           developer {
             id by ghOwnerId
@@ -95,7 +93,7 @@ publishing {
             email by ghOwnerEmail
           }
         }
-
+        
         scm {
           connection by "scm:git:git@github.com:$ghOwnerId/${rootProject.name}.git"
           url by "https://github.com/$ghOwnerId/${rootProject.name}"

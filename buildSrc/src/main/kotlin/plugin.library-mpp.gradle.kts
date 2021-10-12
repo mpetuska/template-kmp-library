@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._d0d153d88d73ba7c0f037c4f5410c0c7.commonTest
-import gradle.kotlin.dsl.accessors._d0d153d88d73ba7c0f037c4f5410c0c7.sourceSets
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinNativeCompile
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
@@ -16,6 +14,21 @@ plugins {
 }
 
 kotlin {
+  sourceSets {
+    val commonMain by getting
+    val commonTest by getting {
+      dependencies {
+        implementation(project(":test"))
+      }
+    }
+    create("nativeMain") {
+      dependsOn(commonMain)
+    }
+    create("nativeTest") {
+      dependsOn(commonTest)
+    }
+  }
+  
   explicitApi()
   jvm()
   js {
@@ -35,13 +48,13 @@ kotlin {
 //            }
 //          }
   }
-
+  
   nativeTargetGroup(
     "androidNdk",
     androidNativeArm32(),
     androidNativeArm64(),
   )
-
+  
   nativeTargetGroup(
     "linux",
     linuxX64(),
@@ -50,14 +63,14 @@ kotlin {
     linuxArm64(),
     linuxArm32Hfp(),
   )
-
+  
   nativeTargetGroup(
     "ios",
     iosArm32(),
     iosArm64(),
     iosX64(),
   )
-
+  
   nativeTargetGroup(
     "watchos",
     watchosArm32(),
@@ -65,33 +78,25 @@ kotlin {
     watchosX86(),
     watchosX64(),
   )
-
+  
   nativeTargetGroup(
     "tvos",
     tvosArm64(),
     tvosX64(),
   )
-
+  
   macosX64()
-
+  
   nativeTargetGroup(
     "mingw",
     mingwX86(),
     mingwX64(),
   )
-
-  sourceSets {
-    commonTest {
-      dependencies {
-        implementation(project(":test"))
-      }
-    }
-  }
-
+  
   val targetsWithCoroutines = KotlinTargetDetails.values()
     .filter(KotlinTargetDetails::hasCoroutines)
     .map(KotlinTargetDetails::presetName)
-
+  
   targets.filter { it.preset?.name in targetsWithCoroutines }
     .forEach {
       it.compilations["main"].defaultSourceSet {

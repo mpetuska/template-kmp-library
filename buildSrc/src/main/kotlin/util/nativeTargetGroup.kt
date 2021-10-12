@@ -11,17 +11,17 @@ fun KotlinMultiplatformExtension.nativeTargetGroup(
 ): Array<out KotlinNativeTarget> {
   sourceSets {
     val (main, test) = if (targets.size > 1) {
-      val commonMain = getByName("commonMain")
-      val commonTest = getByName("commonTest")
+      val nativeMain = getByName("nativeMain")
+      val nativeTest = getByName("nativeTest")
       val main = create("${name}Main") {
-        dependsOn(commonMain)
+        dependsOn(nativeMain)
       }
       val test = create("${name}Test") {
-        dependsOn(commonTest)
+        dependsOn(nativeTest)
       }
       main to test
     } else (null to null)
-
+    
     targets.forEach { target ->
       main?.let {
         target.compilations["main"].defaultSourceSet {

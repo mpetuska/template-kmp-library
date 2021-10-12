@@ -76,10 +76,3 @@ at `.github/workflows/release.yml#L80`
 * `SIGNING_PASSWORD` - GPG signing key password (if set)
 * `SONATYPE_PASSWORD` - Sonatype PAT username
 * `SONATYPE_USERNAME` - Sonatype PAT password
-
-## Known Issues
-
-* [KT-46957](https://youtrack.jetbrains.com/issue/KT-46957) - Commonizer breaks for linuxMips32. This is fixed and
-  scheduled to be released in 1.5.30-M1. However, to make the setup work now, the template is currently using dev build
-  from kotlin snapshot repositories. If you'd like to use a stable kotlin version instead, remove linuxMips32 from linux
-  native target group in `/buildSrc/src/main/kotlin/convention.library.gradle.kts`.

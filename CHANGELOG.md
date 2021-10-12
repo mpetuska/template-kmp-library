@@ -1,3 +1,13 @@
+# v1.1.2
+
+## Changes
+
+* Removed incorrect hashed imports from gradle scripts
+* Bumped versions
+* Introduced nativeMain and nativeTest sourceSets
+* Added BlockingTest utility interface
+* Removed snapshot repository support
+
 # v1.1.1
 
 ## Changes

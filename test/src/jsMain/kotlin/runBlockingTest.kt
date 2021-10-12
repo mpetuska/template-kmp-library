@@ -1,9 +1,10 @@
 package local.test
 
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.promise
+import kotlin.coroutines.EmptyCoroutineContext
 
-actual typealias CoroutineScope = kotlinx.coroutines.CoroutineScope
+actual typealias CoroutineScope = CoroutineScope
 
 actual fun runBlockingTest(test: suspend CoroutineScope.() -> Unit): dynamic =
-  GlobalScope.promise(block = test)
+  CoroutineScope(EmptyCoroutineContext).promise(block = test)
