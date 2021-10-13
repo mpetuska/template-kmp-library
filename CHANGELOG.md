@@ -7,6 +7,10 @@
 * Introduced nativeMain and nativeTest sourceSets
 * Added BlockingTest utility interface
 * Removed snapshot repository support
+* macosArm64() target added
+* iosSimulatorArm64() target added
+* watchosSimulatorArm64() target added
+* tvosSimulatorArm64() target added
 
 # v1.1.1
 

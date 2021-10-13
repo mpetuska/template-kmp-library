@@ -28,7 +28,7 @@ kotlin {
       dependsOn(commonTest)
     }
   }
-  
+
   explicitApi()
   jvm()
   js {
@@ -48,13 +48,13 @@ kotlin {
 //            }
 //          }
   }
-  
+
   nativeTargetGroup(
     "androidNdk",
     androidNativeArm32(),
     androidNativeArm64(),
   )
-  
+
   nativeTargetGroup(
     "linux",
     linuxX64(),
@@ -63,40 +63,47 @@ kotlin {
     linuxArm64(),
     linuxArm32Hfp(),
   )
-  
+
   nativeTargetGroup(
     "ios",
     iosArm32(),
     iosArm64(),
     iosX64(),
+    iosSimulatorArm64(),
   )
-  
+
   nativeTargetGroup(
     "watchos",
     watchosArm32(),
     watchosArm64(),
     watchosX86(),
     watchosX64(),
+    watchosSimulatorArm64(),
   )
-  
+
   nativeTargetGroup(
     "tvos",
     tvosArm64(),
     tvosX64(),
+    tvosSimulatorArm64(),
   )
-  
-  macosX64()
-  
+
+  nativeTargetGroup(
+    "macos",
+    macosX64(),
+    macosArm64(),
+  )
+
   nativeTargetGroup(
     "mingw",
     mingwX86(),
     mingwX64(),
   )
-  
+
   val targetsWithCoroutines = KotlinTargetDetails.values()
     .filter(KotlinTargetDetails::hasCoroutines)
     .map(KotlinTargetDetails::presetName)
-  
+
   targets.filter { it.preset?.name in targetsWithCoroutines }
     .forEach {
       it.compilations["main"].defaultSourceSet {
