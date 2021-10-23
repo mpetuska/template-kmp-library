@@ -7,7 +7,7 @@ Kotlin multiplatform library template.
 
 Has a baseline setup for a multiplatform library supporting all
 kotlin [targets](https://kotlinlang.org/docs/mpp-supported-platforms.html)
-except android (any help in getting that setup welcome) & deprecated wasm32.
+except deprecated wasm32.
 
 ## Features
 

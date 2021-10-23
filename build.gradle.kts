@@ -1,17 +1,10 @@
 plugins {
+  if (System.getenv("CI") == null) {
+    id("plugin.git-hooks")
+  }
   id("plugin.library-mpp")
   id("plugin.publishing-nexus")
   id("plugin.publishing-mpp")
-  id("com.github.jakemarsden.git-hooks")
-}
-
-gitHooks {
-  setHooks(
-    mapOf(
-      "pre-commit" to "ktlintFormat",
-      "pre-push" to "ktlintCheck"
-    )
-  )
 }
 
 gradleEnterprise {
@@ -24,11 +17,7 @@ gradleEnterprise {
 kotlin {
   sourceSets {
     commonMain {
-      dependencies {
-        subprojects.filter { it.path.startsWith(":lib:") }.forEach {
-          api(it)
-        }
-      }
+      dependencies { subprojects.filter { it.path.startsWith(":lib:") }.forEach { api(it) } }
     }
   }
 }

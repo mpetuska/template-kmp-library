@@ -1,10 +1,8 @@
-import de.fayard.refreshVersions.core.versionFor
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
-import util.by
 
 plugins {
-  id("org.jlleitschuh.gradle.ktlint")
+  id("com.diffplug.spotless")
   idea
 }
 
@@ -20,15 +18,13 @@ idea {
   }
 }
 
-ktlint {
-  version by versionFor("version.ktlint")
-  additionalEditorconfigFile.set(rootDir.resolve(".editorconfig"))
+spotless {
+  kotlin { ktfmt() }
+  kotlinGradle { ktfmt() }
 }
 
 tasks {
-  withType<Test> {
-    useJUnitPlatform()
-  }
+  withType<Test> { useJUnitPlatform() }
 
   afterEvaluate {
     if (tasks.findByName("compile") == null) {
@@ -37,8 +33,8 @@ tasks {
         group = "build"
       }
     }
-    if (tasks.findByName("test") == null) {
-      register("test") {
+    if (tasks.findByName("allTests") == null) {
+      register("allTests") {
         dependsOn(withType(KotlinTest::class))
         group = "verification"
       }

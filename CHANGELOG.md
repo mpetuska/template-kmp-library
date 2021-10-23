@@ -2,6 +2,14 @@
 
 ## Changes
 
+* Swapped out ktlint for spotless + ktfmt
+* Disabling git hooks on CI
+* Added android support
+
+# v1.1.2
+
+## Changes
+
 * Removed incorrect hashed imports from gradle scripts
 * Bumped versions
 * Introduced nativeMain and nativeTest sourceSets

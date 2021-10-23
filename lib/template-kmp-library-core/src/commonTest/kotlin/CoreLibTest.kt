@@ -1,5 +1,6 @@
 package dev.petuska.template.kmp.library.core
 
+import dev.petuska.klip.api.assertKlip
 import local.test.BlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -17,5 +18,12 @@ class CoreLibTest : BlockingTest {
     val result = CoreLib().sampleSuspendApi()
     println(result)
     assertEquals(result, platform)
+  }
+
+  @Test
+  fun testValue() = blockingTest {
+    val result = CoreLib().sampleValue
+    println(result)
+    result.assertKlip()
   }
 }
