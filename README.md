@@ -13,7 +13,7 @@ except deprecated wasm32.
 
 * Native target grouping and shared sourceSets
 * Wrapper library module that declares dependencies on all lib modules
-* Uniform configuration via conventional plugins `convention.common`, `convention.library` & `convention.publishing`
+* Uniform configuration via conventional plugins `plugin.common`, `plugin.library-mpp` & `plugin.publishing-mpp`
 * Local `test` module for shared test utilities (a helper function to run coroutine tests in common sourceSet included)
 * Local `sandbox` module for easy library consumer side checks
 * Publication control to avoid multiple publications for targets that can be built on multiple hosts
@@ -26,6 +26,7 @@ except deprecated wasm32.
 * GH check action for platform dependant tests on PRs
 * Maven Central publishing setup
 * GH Packages publishing setup
+* `SDKMAN` support for local env (`sdk man env install` to get the required JDM and `sdkman env` to switch to it)
 
 ## Setup
 
@@ -37,7 +38,7 @@ This README contains some useful badges for your project. To tailor them to your
 to be made:
 
 * `Dokka docs` - change the link as `(http://$GH_USERNAME.github.io/$GH_PROJECT_NAME)`
-* `Version maven-central - change all occurrences of `dev.petuska` to your own group and `template-kmp-library` to your
+* `Version maven-central` - change all occurrences of `dev.petuska` to your own group and `template-kmp-library` to your
   root library name
 
 ### gradle.properties
@@ -54,22 +55,22 @@ Have a look at `gradle.properties` file and change these properties as needed
 
 ### Modules
 
-All the library modules should go to `/lib/` directory and be included in `/settings.gradle.kts`. There are already two
-sample modules to illustrate how simple the setup is (`/lib/template-kmp-library-core` & `template-kmp-library-dsl`).
-They both contain some sample code and tests that make use of local `/test` module with testing utilities.
+All the library modules should go to [./lib] directory and be included in [./settings.gradle.kts]. There are already two
+sample modules to illustrate how simple the setup is ([./lib/template-kmp-library-core] & [./lib/template-kmp-library-dsl]).
+They both contain some sample code and tests that make use of local [./test] module with testing utilities.
 
 ### Kotlin Targets
 
 The template comes packed with all kotlin targets preconfigured, however if you want to remove some of them or tweak the
-config, you only need to make changes as needed in `/buildSrc/src/main/kotlin/convention.library.gradle.kts`. Removing
+config, you only need to make changes as needed in [./buildSrc/src/main/kotlin/plugin.library-mpp.gradle.kts]. Removing
 targets from this file will not break any publications as they're configured on top of pre-registered targets.
 
 ### GitHub Actions
 
 The template also comes with GH actions to check builds on PRs and publish artefacts when creating a GH release. By
-default, it'll publish to GH packages and Maven Central. However to fully unlock Maven Central publishing, you'll need
+default, it'll publish to GH packages and Maven Central. However, to fully unlock Maven Central publishing, you'll need
 to add these secrets to your GH repository. If you want to quickly disable Maven Central publishing, you can toggle it
-at `.github/workflows/release.yml#L80`
+at [./.github/workflows/release.yml#L80]`
 
 * `SIGNING_KEY` - GPG signing key
 * `SIGNING_KEY_ID` - GPG signing key ID

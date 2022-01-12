@@ -1,9 +1,19 @@
+import de.fayard.refreshVersions.core.versionFor
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinTest
+import java.util.Properties
 
 plugins {
   id("com.diffplug.spotless")
   idea
+}
+
+rootDir.resolve("local.properties").takeIf(File::exists)?.let {
+  Properties().apply {
+    it.inputStream().use(::load)
+  }.mapKeys { (k, _) -> k.toString() }
+}?.toList()?.forEach { (k, v) ->
+  project.extra[k] = v
 }
 
 repositories {
@@ -19,8 +29,19 @@ idea {
 }
 
 spotless {
-  kotlin { ktfmt() }
-  kotlinGradle { ktfmt() }
+  val ktlintSettings = mapOf(
+    "indent_size" to "2",
+    "continuation_indent_size" to "4",
+    "disabled_rules" to "no-wildcard-imports"
+  )
+  kotlin {
+    target("src/**/*.kt")
+    ktlint(versionFor("version.ktlint")).userData(ktlintSettings)
+  }
+  kotlinGradle {
+    target("*.kts")
+    ktlint(versionFor("version.ktlint")).userData(ktlintSettings)
+  }
 }
 
 tasks {
