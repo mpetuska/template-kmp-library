@@ -1,4 +1,15 @@
-# v1.1.3
+# 1.1.4
+
+## Changes
+
+* Back to spotless + ktlint
+* Fixed GH actions issues with runners
+* `local.properties` support
+* Custom refreshVersions rules setup
+* `.sdkmanrc` for easier local env setup
+* Version bumps (kotlin@1.6.10, gradle@7.3.3)
+
+# 1.1.3
 
 ## Changes
 
@@ -6,7 +17,7 @@
 * Disabling git hooks on CI
 * Added android support
 
-# v1.1.2
+# 1.1.2
 
 ## Changes
 
@@ -20,7 +31,7 @@
 * watchosSimulatorArm64() target added
 * tvosSimulatorArm64() target added
 
-# v1.1.1
+# 1.1.1
 
 ## Changes
 

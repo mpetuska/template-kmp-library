@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - runner: macos-latest
+          - runner: macos-11
             shell: bash
           - runner: windows-latest
             shell: msys2 {0}

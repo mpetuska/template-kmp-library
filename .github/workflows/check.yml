@@ -15,7 +15,7 @@ env:
 jobs:
   check:
     name: Check on ${{ matrix.os.runner }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os.runner }}
     defaults:
       run:
         shell: ${{ matrix.os.shell }}
@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - runner: macos-latest
+          - runner: macos-11
             shell: bash
           - runner: ubuntu-latest
             shell: bash
