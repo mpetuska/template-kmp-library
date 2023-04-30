@@ -7,7 +7,8 @@ import kotlinx.coroutines.runBlocking
 
 fun main() {
   val core = CoreLib()
-  println(core.sampleApi().withPlatform())
+  println(core.sampleApi())
+  println(core.withPlatform("Blocking"))
   runBlocking {
     suspendingMain()
   }
@@ -15,5 +16,6 @@ fun main() {
 
 suspend fun suspendingMain() {
   val core = CoreLib()
-  println(core.sampleSuspendApi().withPlatformSuspend())
+  println(core.sampleSuspendApi())
+  println(core.withPlatformSuspend("Suspending"))
 }

@@ -1,12 +1,12 @@
 package local.sandbox
 
-import local.test.runBlockingTest
 import kotlinx.coroutines.delay
-import org.junit.Test
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Test
 
 class MainTest {
   @Test
-  fun test() = runBlockingTest {
+  fun test() = runTest {
     println(main())
     delay(500)
     println("After Delay: ${suspendingMain()}")

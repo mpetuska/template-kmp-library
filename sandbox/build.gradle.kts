@@ -1,12 +1,7 @@
 plugins {
-  kotlin("jvm") version "1.8.0"
+  id("convention.jvm")
+  kotlin("jvm") version libs.versions.kotlin.get()
   application
-}
-
-repositories {
-  mavenCentral()
-  google()
-  maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
 }
 
 description = "Local consumer sandbox"
@@ -16,6 +11,7 @@ application {
 }
 
 dependencies {
+  implementation(libs.kotlinx.coroutines.core)
   implementation("dev.petuska:template-kmp-library")
-  testImplementation("dev.petuska:test")
+  testImplementation("dev.petuska:test-utils")
 }

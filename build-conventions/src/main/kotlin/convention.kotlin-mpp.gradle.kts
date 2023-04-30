@@ -8,12 +8,4 @@ plugins {
 kotlin {
   @OptIn(ExperimentalKotlinGradlePluginApi::class)
   targetHierarchy.default()
-
-  sourceSets {
-    commonTest {
-      dependencies {
-        implementation(kotlin("test"))
-      }
-    }
-  }
 }
