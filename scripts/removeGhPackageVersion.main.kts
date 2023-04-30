@@ -2,24 +2,25 @@
 
 // usage: ./removeGhPackageVersion.main.kts template-kmp-library 1.1.3
 
-@file:DependsOn("io.ktor:ktor-client-cio-jvm:2.2.2")
-@file:DependsOn("io.ktor:ktor-client-gson:2.2.2")
-@file:DependsOn("io.ktor:ktor-client-auth-jvm:2.2.2")
+@file:DependsOn("io.ktor:ktor-client-cio-jvm:2.3.0")
+@file:DependsOn("io.ktor:ktor-client-content-negotiation-jvm:2.3.0")
+@file:DependsOn("io.ktor:ktor-serialization-gson-jvm:2.3.0")
+@file:DependsOn("io.ktor:ktor-client-auth-jvm:2.3.0")
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
-import io.ktor.client.features.auth.Auth
-import io.ktor.client.features.auth.providers.BasicAuthCredentials
-import io.ktor.client.features.auth.providers.basic
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
+import io.ktor.client.plugins.auth.providers.basic
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.request.host
 import io.ktor.client.request.parameter
 import io.ktor.http.URLProtocol
+import io.ktor.serialization.gson.gson
 import kotlinx.coroutines.runBlocking
 
 val targetRepo = args.getOrNull(0) ?: error("Target repository not specified")
@@ -38,11 +39,11 @@ val ghClient = HttpClient(CIO) {
       sendWithoutRequest { true }
     }
   }
-  install(JsonFeature) {
-    serializer = GsonSerializer()
+  install(ContentNegotiation) {
+    gson()
   }
+  followRedirects = true
   defaultRequest {
-    followRedirects = true
     host = "api.github.com"
     url {
       protocol = URLProtocol.HTTPS
@@ -51,18 +52,30 @@ val ghClient = HttpClient(CIO) {
   }
 }
 
-data class GHRepository(val id: String, val node_id: String, val name: String, val full_name: String)
-data class GHPackage(val id: String, val name: String, val package_type: String, val repository: GHRepository)
+data class GHRepository(
+  val id: String,
+  val node_id: String,
+  val name: String,
+  val full_name: String
+)
+
+data class GHPackage(
+  val id: String,
+  val name: String,
+  val package_type: String,
+  val repository: GHRepository
+)
+
 data class GHPackageVersion(val id: String, val name: String)
 
 runBlocking {
   val packages = mutableListOf<GHPackage>().run {
     var i = 0
     while (true) {
-      val page = ghClient.get<List<GHPackage>>("/user/packages") {
+      val page = ghClient.get("/user/packages") {
         parameter("package_type", "maven")
         parameter("page", "${++i}")
-      }
+      }.body<List<GHPackage>>()
       if (page.isEmpty()) {
         break
       } else {
@@ -75,10 +88,10 @@ runBlocking {
     it to mutableListOf<GHPackageVersion>().run {
       var i = 0
       while (true) {
-        val page = ghClient.get<List<GHPackageVersion>>("/user/packages/${it.package_type}/${it.name}/versions") {
+        val page = ghClient.get("/user/packages/${it.package_type}/${it.name}/versions") {
           parameter("package_type", "maven")
           parameter("page", "${++i}")
-        }
+        }.body<List<GHPackageVersion>>()
         if (page.isEmpty()) {
           break
         } else {
@@ -93,11 +106,11 @@ runBlocking {
     if (ver.size > 1) {
       ver.firstOrNull { it.name == targetVersion }?.let {
         println("Deleting ${pkg.name}@${it.name}")
-        ghClient.delete<Unit>("/user/packages/${pkg.package_type}/${pkg.name}/versions/${it.id}")
+        ghClient.delete("/user/packages/${pkg.package_type}/${pkg.name}/versions/${it.id}")
       }
     } else if (ver.any { it.name == targetVersion }) {
       println("Deleting ${pkg.name}")
-      ghClient.delete<Unit>("/user/packages/${pkg.package_type}/${pkg.name}")
+      ghClient.delete("/user/packages/${pkg.package_type}/${pkg.name}")
     }
   }
 }
