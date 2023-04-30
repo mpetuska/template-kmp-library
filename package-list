@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:template-kmp-library-core
+dev.petuska.template.kmp.library.core
+module:template-kmp-library-dsl
+dev.petuska.template.kmp.library.dsl
