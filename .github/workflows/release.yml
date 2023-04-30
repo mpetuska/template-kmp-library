@@ -73,7 +73,9 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: |
+            11
+            17
 
       - name: Restore Gradle cache
         id: cache-gradle
@@ -182,7 +184,9 @@ jobs:
         if: ${{ matrix.repository.enabled == true }}
         with:
           distribution: 'adopt'
-          java-version: 11
+          java-version: |
+            11
+            17
 
       - name: Restore Gradle cache
         if: ${{ matrix.repository.enabled == true }}
