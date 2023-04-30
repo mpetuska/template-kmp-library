@@ -1,17 +1,27 @@
-plugins {
-  id("de.fayard.refreshVersions") version "0.51.0"
-  id("com.gradle.enterprise") version "3.12.3"
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+    mavenCentral()
+  }
 }
 
-refreshVersions {
-  extraArtifactVersionKeyRules(rootDir.resolve("versions.rules"))
+plugins {
+  id("com.gradle.enterprise") version "3.13"
 }
+
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 rootProject.name = "template-kmp-library"
-
-include(":test")
+includeBuild("./build-conventions/")
+include(":tests:test-utils")
 
 include(
-  ":lib:template-kmp-library-core",
-  ":lib:template-kmp-library-dsl"
+  ":modules:template-kmp-library-core",
+  ":tests:template-kmp-library-core-tests"
+)
+
+include(
+  ":modules:template-kmp-library-dsl",
+  ":tests:template-kmp-library-dsl-tests"
 )

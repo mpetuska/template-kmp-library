@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - runner: macos-11
+          - runner: macos-latest
             shell: bash
           - runner: ubuntu-latest
             shell: bash
