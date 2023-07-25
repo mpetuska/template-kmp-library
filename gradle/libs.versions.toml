@@ -17,7 +17,7 @@ kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.
 kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
-plugin-android = "com.android.tools.build:gradle:8.0.0"
+plugin-android = "com.android.tools.build:gradle:8.1.0"
 plugin-container-tasks = "dev.petuska:container-tasks-gradle-plugin:0.0.4"
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-git-hooks = "com.github.jakemarsden:git-hooks-gradle-plugin:0.0.2"
