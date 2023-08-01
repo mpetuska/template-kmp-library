@@ -5,7 +5,7 @@
 @file:DependsOn("io.ktor:ktor-client-cio-jvm:2.3.0")
 @file:DependsOn("io.ktor:ktor-client-content-negotiation-jvm:2.3.0")
 @file:DependsOn("io.ktor:ktor-serialization-gson-jvm:2.3.0")
-@file:DependsOn("io.ktor:ktor-client-auth-jvm:2.3.0")
+@file:DependsOn("io.ktor:ktor-client-auth-jvm:2.3.3")
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
