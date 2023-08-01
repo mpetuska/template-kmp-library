@@ -3,7 +3,7 @@
 // usage: ./removeGhPackageVersion.main.kts template-kmp-library 1.1.3
 
 @file:DependsOn("io.ktor:ktor-client-cio-jvm:2.3.0")
-@file:DependsOn("io.ktor:ktor-client-content-negotiation-jvm:2.3.0")
+@file:DependsOn("io.ktor:ktor-client-content-negotiation-jvm:2.3.3")
 @file:DependsOn("io.ktor:ktor-serialization-gson-jvm:2.3.0")
 @file:DependsOn("io.ktor:ktor-client-auth-jvm:2.3.0")
 
